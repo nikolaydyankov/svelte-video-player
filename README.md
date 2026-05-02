@@ -43,13 +43,10 @@ Provide `width` and `height` props matching the video's real dimensions to calcu
 
 ```svelte
 <script>
-  import VideoPlayer from 'svelte-video-player';
+	import VideoPlayer from 'svelte-video-player';
 </script>
 
-<VideoPlayer
-  poster="https://example.com/poster.jpg"
-  source="https://example.com/video.mp4"
-/>
+<VideoPlayer poster="https://example.com/poster.jpg" source="https://example.com/video.mp4" />
 ```
 
 ### Multiple sources
@@ -57,9 +54,7 @@ Provide `width` and `height` props matching the video's real dimensions to calcu
 Pass an array to provide fallback formats:
 
 ```svelte
-<VideoPlayer
-  source={['video.mp4', 'video.webm']}
-/>
+<VideoPlayer source={['video.mp4', 'video.webm']} />
 ```
 
 ### HLS streaming
@@ -84,11 +79,11 @@ A CC toggle button appears automatically when tracks are provided. Track selecti
 
 ```svelte
 <VideoPlayer
-  source="video.mp4"
-  tracks={[
-    { src: '/subs/en.vtt', srclang: 'en', label: 'English', default: true },
-    { src: '/subs/es.vtt', srclang: 'es', label: 'Spanish' }
-  ]}
+	source="video.mp4"
+	tracks={[
+		{ src: '/subs/en.vtt', srclang: 'en', label: 'English', default: true },
+		{ src: '/subs/es.vtt', srclang: 'es', label: 'Spanish' }
+	]}
 />
 ```
 
@@ -96,12 +91,12 @@ A CC toggle button appears automatically when tracks are provided. Track selecti
 
 ```svelte
 <VideoPlayer
-  source="video.mp4"
-  chapters={[
-    { time: 0, label: 'Intro' },
-    { time: 60, label: 'Chapter 1' },
-    { time: 180, label: 'Chapter 2' }
-  ]}
+	source="video.mp4"
+	chapters={[
+		{ time: 0, label: 'Intro' },
+		{ time: 60, label: 'Chapter 1' },
+		{ time: 180, label: 'Chapter 2' }
+	]}
 />
 ```
 
@@ -111,66 +106,66 @@ Integrate with the browser's Media Session API for OS-level media controls:
 
 ```svelte
 <VideoPlayer
-  source="video.mp4"
-  mediaSession={{
-    title: 'My Video',
-    artist: 'Author',
-    album: 'Collection',
-    artwork: [{ src: '/art.jpg', sizes: '512x512', type: 'image/jpeg' }]
-  }}
+	source="video.mp4"
+	mediaSession={{
+		title: 'My Video',
+		artist: 'Author',
+		album: 'Collection',
+		artwork: [{ src: '/art.jpg', sizes: '512x512', type: 'image/jpeg' }]
+	}}
 />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|:-----|:-----|:--------|:------------|
-| `width` | `number \| string` | `1920` | Real video width for aspect ratio calculation |
-| `height` | `number \| string` | `1080` | Real video height for aspect ratio calculation |
-| `poster` | `string` | `''` | Poster image URL |
-| `source` | `string \| string[]` | `''` | Video source URL(s) — supports `mp4`, `webm`, `ogg`, `m3u8`, `mpd` |
-| `loop` | `boolean` | `false` | Loop playback |
-| `autoplay` | `boolean` | `false` | Autoplay on load |
-| `playsinline` | `boolean` | `true` | Play inline on mobile |
-| `preload` | `string` | `'metadata'` | Preload behavior (`none`, `metadata`, `auto`) |
-| `crossorigin` | `string` | `undefined` | CORS mode (auto-set to `anonymous` when tracks are provided) |
-| `skipSeconds` | `number \| string` | `5` | Seconds to skip with arrow keys |
-| `controlsOnPause` | `boolean` | `true` | Show controls when paused |
-| `timeDisplay` | `boolean` | `true` | Show current time / duration |
-| `remainingTime` | `boolean` | `false` | Show remaining time instead of current time |
-| `playbackRateControl` | `boolean` | `true` | Enable playback rate control in settings menu |
-| `tracks` | `TextTrackConfig[]` | `[]` | Subtitle/caption tracks |
-| `chapters` | `Chapter[]` | `[]` | Chapter markers on the progress bar |
-| `mediaSession` | `MediaSessionConfig` | `undefined` | Media Session API metadata |
-| `currentTime` | `number` (bindable) | `undefined` | Two-way bound to the video's `currentTime`. Use `bind:currentTime` to read/seek. |
+| Prop                  | Type                 | Default      | Description                                                                      |
+| :-------------------- | :------------------- | :----------- | :------------------------------------------------------------------------------- |
+| `width`               | `number \| string`   | `1920`       | Real video width for aspect ratio calculation                                    |
+| `height`              | `number \| string`   | `1080`       | Real video height for aspect ratio calculation                                   |
+| `poster`              | `string`             | `''`         | Poster image URL                                                                 |
+| `source`              | `string \| string[]` | `''`         | Video source URL(s) — supports `mp4`, `webm`, `ogg`, `m3u8`, `mpd`               |
+| `loop`                | `boolean`            | `false`      | Loop playback                                                                    |
+| `autoplay`            | `boolean`            | `false`      | Autoplay on load                                                                 |
+| `playsinline`         | `boolean`            | `true`       | Play inline on mobile                                                            |
+| `preload`             | `string`             | `'metadata'` | Preload behavior (`none`, `metadata`, `auto`)                                    |
+| `crossorigin`         | `string`             | `undefined`  | CORS mode (auto-set to `anonymous` when tracks are provided)                     |
+| `skipSeconds`         | `number \| string`   | `5`          | Seconds to skip with arrow keys                                                  |
+| `controlsOnPause`     | `boolean`            | `true`       | Show controls when paused                                                        |
+| `timeDisplay`         | `boolean`            | `true`       | Show current time / duration                                                     |
+| `remainingTime`       | `boolean`            | `false`      | Show remaining time instead of current time                                      |
+| `playbackRateControl` | `boolean`            | `true`       | Enable playback rate control in settings menu                                    |
+| `tracks`              | `TextTrackConfig[]`  | `[]`         | Subtitle/caption tracks                                                          |
+| `chapters`            | `Chapter[]`          | `[]`         | Chapter markers on the progress bar                                              |
+| `mediaSession`        | `MediaSessionConfig` | `undefined`  | Media Session API metadata                                                       |
+| `currentTime`         | `number` (bindable)  | `0`          | Two-way bound to the video's `currentTime`. Use `bind:currentTime` to read/seek. |
 
 ### Styling props
 
-| Prop | Type | Default | Description |
-|:-----|:-----|:--------|:------------|
-| `color` | `string` | `'#FF3E00'` | Main color of controls |
-| `playerBgColor` | `string` | `'black'` | Player background color |
-| `iconColor` | `string` | `'white'` | Button icon color |
-| `focusColor` | `string` | `'white'` | Focus outline color |
-| `barsBgColor` | `string` | `'white'` | Track background color |
-| `borderColor` | `string` | `'none'` | Player border color (set to a color value to show border) |
-| `controlsHeight` | `string` | `'55px'` | Height of bottom control bar |
-| `trackHeight` | `string` | `'4px'` | Height of playbar and volume tracks |
-| `thumbSize` | `string` | `'15px'` | Size of slider thumbs |
-| `centerIconSize` | `string` | `'60px'` | Size of center play icon |
-| `borderRadius` | `string` | `'8px'` | Player corner radius |
-| `buttonBorderRadius` | `string` | `'50%'` | Button corner radius |
+| Prop                 | Type     | Default     | Description                                               |
+| :------------------- | :------- | :---------- | :-------------------------------------------------------- |
+| `color`              | `string` | `'#FF3E00'` | Main color of controls                                    |
+| `playerBgColor`      | `string` | `'black'`   | Player background color                                   |
+| `iconColor`          | `string` | `'white'`   | Button icon color                                         |
+| `focusColor`         | `string` | `'white'`   | Focus outline color                                       |
+| `barsBgColor`        | `string` | `'white'`   | Track background color                                    |
+| `borderColor`        | `string` | `'none'`    | Player border color (set to a color value to show border) |
+| `controlsHeight`     | `string` | `'55px'`    | Height of bottom control bar                              |
+| `trackHeight`        | `string` | `'4px'`     | Height of playbar and volume tracks                       |
+| `thumbSize`          | `string` | `'15px'`    | Size of slider thumbs                                     |
+| `centerIconSize`     | `string` | `'60px'`    | Size of center play icon                                  |
+| `borderRadius`       | `string` | `'8px'`     | Player corner radius                                      |
+| `buttonBorderRadius` | `string` | `'50%'`     | Button corner radius                                      |
 
 ## Keyboard shortcuts
 
-| Key | Action |
-|:----|:-------|
-| Space | Play / Pause |
-| Left / Right arrow | Skip backward / forward |
-| Tab | Navigate controls |
-| Enter / Space | Activate focused control |
-| Escape | Close settings menu |
-| < / > | Decrease / Increase playback rate |
+| Key                | Action                            |
+| :----------------- | :-------------------------------- |
+| Space              | Play / Pause                      |
+| Left / Right arrow | Skip backward / forward           |
+| Tab                | Navigate controls                 |
+| Enter / Space      | Activate focused control          |
+| Escape             | Close settings menu               |
+| < / >              | Decrease / Increase playback rate |
 
 ## SSR
 
