@@ -32,7 +32,7 @@ https://svelte-video-player.netlify.app/
 ## Installation
 
 ```bash
-npm install svelte-video-player
+npm install @ndycodes/svelte-video-player
 ```
 
 Requires Svelte 5.
