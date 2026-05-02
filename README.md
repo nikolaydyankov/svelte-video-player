@@ -19,6 +19,8 @@
 
 # Svelte Video Player
 
+> **Fork notice:** Forked from [meigo/svelte-video-player](https://github.com/meigo/svelte-video-player) to expose the `currentTime` prop as bindable. No other changes.
+
 A video player component for Svelte 5 with HLS/DASH streaming, subtitles, picture-in-picture, playback rate control, quality selection, and Media Session API support.
 
 Controls are fully keyboard-accessible. Starting a player pauses any previously playing instance. Fullscreen is disabled on iPhone but works on other mobile and desktop browsers.
@@ -140,6 +142,7 @@ Integrate with the browser's Media Session API for OS-level media controls:
 | `tracks` | `TextTrackConfig[]` | `[]` | Subtitle/caption tracks |
 | `chapters` | `Chapter[]` | `[]` | Chapter markers on the progress bar |
 | `mediaSession` | `MediaSessionConfig` | `undefined` | Media Session API metadata |
+| `currentTime` | `number` (bindable) | `undefined` | Two-way bound to the video's `currentTime`. Use `bind:currentTime` to read/seek. |
 
 ### Styling props
 

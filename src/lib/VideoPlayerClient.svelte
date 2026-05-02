@@ -12,7 +12,13 @@
 	import { uid, preloadImage, prepareVideoSources } from './utils.js';
 	import { createAdapter } from './adapters/index.js';
 	import { setPlayerConfig } from './context.js';
-	import type { PlayerConfig, MediaSessionConfig, TextTrackConfig, Chapter, SourceAdapter } from './types.js';
+	import type {
+		PlayerConfig,
+		MediaSessionConfig,
+		TextTrackConfig,
+		Chapter,
+		SourceAdapter
+	} from './types.js';
 
 	import Poster from './Poster.svelte';
 	import Controls from './Controls.svelte';
@@ -63,6 +69,7 @@
 		chapters: Chapter[];
 		mediaSession?: MediaSessionConfig;
 		tracks: TextTrackConfig[];
+		currentTime?: number;
 	}
 
 	let {
@@ -95,7 +102,8 @@
 		playbackRateControl,
 		chapters,
 		mediaSession,
-		tracks
+		tracks,
+		currentTime = $bindable(0)
 	}: Props = $props();
 
 	let _sources = $derived(prepareVideoSources(source));
@@ -112,34 +120,64 @@
 	let _adapter: SourceAdapter | null = $state(null);
 	let _useAdapter = $derived(
 		_sources.length > 0 &&
-		(_sources[0].type === 'application/x-mpegURL' || _sources[0].type === 'application/dash+xml')
+			(_sources[0].type === 'application/x-mpegURL' || _sources[0].type === 'application/dash+xml')
 	);
 	let _qualityLevels = $derived((_adapter as SourceAdapter | null)?.levels ?? []);
 	let _currentQualityLevel = $derived((_adapter as SourceAdapter | null)?.currentLevel ?? -1);
 
 	// Reactive config context using getters so children see updates
 	const config: PlayerConfig = {
-		get controlsHeight() { return controlsHeight; },
-		get trackHeight() { return trackHeight; },
-		get thumbSize() { return thumbSize; },
-		get centerIconSize() { return centerIconSize; },
-		get color() { return color; },
-		get playerBgColor() { return playerBgColor; },
-		get focusColor() { return focusColor; },
-		get barsBgColor() { return barsBgColor; },
-		get iconColor() { return iconColor; },
-		get loop() { return loop; },
-		get borderRadius() { return borderRadius; },
-		get buttonBorderRadius() { return buttonBorderRadius; },
-		get controlsOnPause() { return controlsOnPause; },
-		get timeDisplay() { return timeDisplay; }
+		get controlsHeight() {
+			return controlsHeight;
+		},
+		get trackHeight() {
+			return trackHeight;
+		},
+		get thumbSize() {
+			return thumbSize;
+		},
+		get centerIconSize() {
+			return centerIconSize;
+		},
+		get color() {
+			return color;
+		},
+		get playerBgColor() {
+			return playerBgColor;
+		},
+		get focusColor() {
+			return focusColor;
+		},
+		get barsBgColor() {
+			return barsBgColor;
+		},
+		get iconColor() {
+			return iconColor;
+		},
+		get loop() {
+			return loop;
+		},
+		get borderRadius() {
+			return borderRadius;
+		},
+		get buttonBorderRadius() {
+			return buttonBorderRadius;
+		},
+		get controlsOnPause() {
+			return controlsOnPause;
+		},
+		get timeDisplay() {
+			return timeDisplay;
+		},
+		get currentTime() {
+			return currentTime;
+		}
 	};
 	setPlayerConfig(config);
 
 	// Video element bindings
 	let videoPlayerElement = $state<HTMLDivElement>();
 	let videoElement = $state<HTMLVideoElement>();
-	let currentTime = $state(0);
 	let duration = $state(0);
 	let seeking = $state(false);
 	let ended = $state(false);
@@ -162,7 +200,10 @@
 		let adapter: SourceAdapter | null = null;
 
 		createAdapter(mimeType).then((a) => {
-			if (destroyed) { a.destroy(); return; }
+			if (destroyed) {
+				a.destroy();
+				return;
+			}
 			adapter = a;
 			_adapter = a;
 			a.attach(videoElement!, src);
@@ -399,45 +440,14 @@
 	}
 </script>
 
-<style>
-	:global(video::-webkit-media-controls) {
-		display: none !important;
-	}
-
-	.aspect {
-		box-sizing: border-box;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding-top: 100%;
-		overflow: hidden;
-		border-radius: 8px;
-		-webkit-mask-image: -webkit-radial-gradient(white, black);
-		mask-image: -webkit-radial-gradient(white, black);
-	}
-
-	.aspect > :first-child {
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		outline: none;
-	}
-
-	video {
-		position: relative;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
 <div
 	class="aspect"
 	role="region"
 	aria-label="Video player"
-	style="padding-top:{_aspectRatio * 100}%; background-color:{playerBgColor}; border-radius:{borderRadius}; {borderColor !== 'none' ? `border: 2px solid ${borderColor}` : ''}"
+	style="padding-top:{_aspectRatio *
+		100}%; background-color:{playerBgColor}; border-radius:{borderRadius}; {borderColor !== 'none'
+		? `border: 2px solid ${borderColor}`
+		: ''}"
 >
 	{#await preloadImage(poster)}
 		<div>
@@ -471,10 +481,10 @@
 				onplay={onPlay}
 				onplaying={onVideoPlaying}
 				onwaiting={onVideoWaiting}
-				preload={preload}
-				autoplay={autoplay}
+				{preload}
+				{autoplay}
 				crossorigin={_crossorigin}
-				playsinline={playsinline}
+				{playsinline}
 			>
 				{#each tracks as track (track.src)}
 					<track kind="captions" src={track.src} srclang={track.srclang} label={track.label} />
@@ -491,7 +501,10 @@
 			{/if}
 
 			<Controls>
-				<BottomControls hidden={!isBottomControlsVisible} bind:isPointerOver={isPointerOverControls}>
+				<BottomControls
+					hidden={!isBottomControlsVisible}
+					bind:isPointerOver={isPointerOverControls}
+				>
 					<PlayPauseButton onpointerup={onPlayPauseButtonPointerUp} {paused} />
 					<Playbar
 						{duration}
@@ -527,11 +540,7 @@
 						<FullscreenButton onpointerup={onFullscreenButtonPointerUp} {isFullscreen} />
 					{/if}
 				</BottomControls>
-				<CenterIcons
-					isIconVisible={isCenterIconVisible}
-					{isSpinnerVisible}
-					{isBuffering}
-				/>
+				<CenterIcons isIconVisible={isCenterIconVisible} {isSpinnerVisible} {isBuffering} />
 			</Controls>
 		</div>
 	{:catch error}
@@ -546,3 +555,36 @@
 		<MediaSessionManager {videoElement} {mediaSession} />
 	{/if}
 </div>
+
+<style>
+	:global(video::-webkit-media-controls) {
+		display: none !important;
+	}
+
+	.aspect {
+		box-sizing: border-box;
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-top: 100%;
+		overflow: hidden;
+		border-radius: 8px;
+		-webkit-mask-image: -webkit-radial-gradient(white, black);
+		mask-image: -webkit-radial-gradient(white, black);
+	}
+
+	.aspect > :first-child {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		outline: none;
+	}
+
+	video {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+</style>

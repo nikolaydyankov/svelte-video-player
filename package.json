@@ -1,10 +1,19 @@
 {
-  "name": "svelte-video-player",
-  "version": "2.1.0",
-  "author": "Meigo Kukk",
-  "repository": "meigo/svelte-video-player",
-  "description": "Video player component for Svelte.",
-  "homepage": "https://github.com/meigo/svelte-video-player",
+  "name": "@ndycodes/svelte-video-player",
+  "version": "0.1.0",
+  "author": "Nikolay Dyankov",
+  "contributors": ["Meigo Kukk (original author)"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikolaydyankov/svelte-video-player.git"
+  },
+  "homepage": "https://github.com/nikolaydyankov/svelte-video-player",
+  "bugs": {
+    "url": "https://github.com/nikolaydyankov/svelte-video-player/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "type": "module",
   "svelte": "./dist/index.js",
